@@ -4,7 +4,7 @@ FROM huggla/alpine
 COPY --from=jdk /opt /opt
 
 ENV GDAL_VERSION="2.2.4" \
-    ANT_VERSION="1.9.11" \
+    ANT_VERSION="1.10.3" \
     ANT_HOME="/opt/ant" \
     _POSIX2_VERSION="199209" \
     JAVA_HOME="/opt/jdk" \
