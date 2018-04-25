@@ -31,7 +31,7 @@ RUN apk add --no-cache --virtual .build-deps build-base curl-dev giflib-dev jpeg
  && sed -i 's/source="1.5"/source="1.6"/g' "$buildDir/gdal-${GDAL_VERSION}/swig/java/build.xml" \
  && sed -i 's/target="1.5"/target="1.6"/g' "$buildDir/gdal-${GDAL_VERSION}/swig/java/build.xml" \
  && cd "$buildDir/gdal-${GDAL_VERSION}" \
- && ./configure --prefix=/opt/gdal --with-curl=/usr/bin/curl-config --with-java=$JAVA_HOME --with-ecw=/opt/hexagon --without-ld-shared --disable-shared --enable-static \
+ && ./configure --prefix=/opt/gdal --with-curl=/usr/bin/curl-config --with-java=$JAVA_HOME --with-ecw=/opt/hexagon \
  && make \
  && make install \
 # && ldconfig \
