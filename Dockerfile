@@ -46,6 +46,6 @@ RUN apk add --no-cache --virtual .build-deps build-base curl-dev giflib-dev jpeg
  && rm -rf "$buildDir" \
  && chmod -x /opt/gdal/include/*.h \
  && rm -rf "$downloadDir" "$buildDir" \
- && apk del .build-deps
+ && apk del .build-deps .build-deps2
 
 USER sudoer
