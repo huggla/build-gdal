@@ -3,7 +3,7 @@ FROM huggla/alpine
 ENV GDAL_VERSION="2.2.4" \
     _POSIX2_VERSION="199209" \
     JAVA_HOME="/opt/jdk" \
-    PATH="$PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin"
+    PATH="$PATH:/opt/jdk/bin"
 
 RUN apk add --no-cache --virtual .build-deps build-base curl-dev giflib-dev jpeg-dev libjpeg-turbo-dev libpng-dev linux-headers postgresql-dev python2-dev sqlite-dev swig tiff-dev zlib-dev openjdk8 \
  && downloadDir="$(mktemp -d)" \
