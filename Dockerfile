@@ -17,7 +17,7 @@ RUN apk add --no-cache --virtual .build-deps build-base curl-dev giflib-dev jpeg
  && downloadDir="$(mktemp -d)" \
  && buildDir="$(mktemp -d)" \
  && cd "$downloadDir" \
- && wget https://s3-eu-west-1.amazonaws.com/mapcentia-tmp/ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION.zip \
+ && wget http://s3-eu-west-1.amazonaws.com/mapcentia-tmp/ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION.zip \
  && unzip ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION.zip \
  && mkdir /opt/hexagon \
  && cp -r ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION/Desktop_Read-Only/* /opt/hexagon \
