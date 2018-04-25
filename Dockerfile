@@ -1,15 +1,11 @@
-FROM openjdk:jdk-alpine
+FROM huggla/alpine
 
-ENV GEOSERVER_VERSION="2.8.5" \
-    GDAL_VERSION="2.2.4" \
-    ANT_VERSION="1.9.11" \
-    ANT_HOME="/usr/local/ant" \
-    LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib/:/opt/jdk/lib" \
+ENV GDAL_VERSION="2.2.4" \
     _POSIX2_VERSION="199209" \
-    JAVA_HOME="/opt/jdk" \
-    PATH="$PATH:/opt/jdk/bin:/usr/local/ant/bin"
+    JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk" \
+    PATH="$PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin"
 
-RUN apk add --no-cache --virtual .build-deps g++ make swig openjdk8-jre-base \
+RUN apk add --no-cache --virtual .build-deps g++ make swig openjdk8 \
  && apk add --no-cache libstdc++ \
  && downloadDir="$(mktemp -d)" \
  && buildDir="$(mktemp -d)" \
