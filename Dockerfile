@@ -17,7 +17,7 @@ RUN apk add --no-cache --virtual .build-deps build-base curl-dev giflib-dev jpeg
  && wget http://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz -O "$downloadDir/gdal.tar.gz" \
  && tar xzf "$downloadDir/gdal.tar.gz" -C "$buildDir" \
  && cd "$buildDir/gdal-${GDAL_VERSION}" \
- && ./configure --prefix=/opt/gdal --with-curl=/usr/bin/curl-config --with-java=$JAVA_HOME \
+ && ./configure --prefix=/opt/gdal --with-curl=/usr/bin/curl-config --with-java=$JAVA_HOME --without-ld-shared --disable-shared --enable-static \
  && make \
  && make install \
  && wget https://www.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz -O "$downloadDir/ant.tar.gz" \
