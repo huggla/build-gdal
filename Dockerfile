@@ -31,6 +31,7 @@ RUN apk add --no-cache --virtual .build-deps build-base curl-dev giflib-dev jpeg
  && ./configure --prefix=/opt/gdal --with-curl=/usr/bin/curl-config --with-java=$JAVA_HOME --with-ecw=/opt/hexagon --without-ld-shared --disable-shared --enable-static \
  && make \
  && make install \
+ && ldconfig \
  && wget https://www.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz -O "$downloadDir/ant.tar.gz" \
  && tar xzf "$downloadDir/ant.tar.gz" -C "$downloadDir" \
  && mkdir /opt/ant \
