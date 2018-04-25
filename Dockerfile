@@ -9,7 +9,7 @@ ENV GEOSERVER_VERSION="2.8.5" \
     JAVA_HOME="/opt/jdk" \
     PATH="$PATH:/opt/jdk/bin:/usr/local/ant/bin"
 
-RUN apk add --no-cache --virtual .build-deps g++ make swig \
+RUN apk add --no-cache --virtual .build-deps g++ make swig openjdk8-jre-base \
  && apk add --no-cache libstdc++ \
  && downloadDir="$(mktemp -d)" \
  && buildDir="$(mktemp -d)" \
