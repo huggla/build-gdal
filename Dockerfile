@@ -19,4 +19,5 @@ RUN apk add --no-cache --virtual .build-deps g++ make swig \
  && ./configure  --with-java=$JAVA_HOME \
  && make \
  && make install \
- && rm -rf "$downloadDir" "$buildDir"
+ && rm -rf "$downloadDir" "$buildDir" \
+ && apk del .build-deps
