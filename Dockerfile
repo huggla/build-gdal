@@ -27,6 +27,8 @@ RUN apk add --no-cache --virtual .build-deps build-base curl-dev giflib-dev jpeg
  && rm -rf ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION.zip ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION \
  && wget http://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz -O "$downloadDir/gdal.tar.gz" \
  && tar xzf "$downloadDir/gdal.tar.gz" -C "$buildDir" \
+ && sed -i 's/source="1.5"/source="1.6"/g' "$buildDir/gdal-${GDAL_VERSION}/swig/java/build.xml" \
+ && sed -i 's/target="1.5"/target="1.6"/g' "$buildDir/gdal-${GDAL_VERSION}/swig/java/build.xml" \
  && cd "$buildDir/gdal-${GDAL_VERSION}" \
  && ./configure --prefix=/opt/gdal --with-curl=/usr/bin/curl-config --with-java=$JAVA_HOME --with-ecw=/opt/hexagon --without-ld-shared --disable-shared --enable-static \
  && make \
