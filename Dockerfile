@@ -11,7 +11,7 @@ ENV GDAL_VERSION="2.2.4" \
     PATH="$PATH:/opt/jdk/bin:/opt/ant/bin"
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib/:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib"
 
-RUN apk add --no-cache --virtual .build-deps build-base curl-dev giflib-dev jpeg-dev libjpeg-turbo-dev libpng-dev linux-headers postgresql-dev python2-dev sqlite-dev swig tiff-dev zlib-dev \
+RUN apk add --no-cache --virtual .build-deps build-base curl-dev giflib-dev jpeg-dev libjpeg-turbo-dev libpng-dev linux-headers postgresql-dev python2-dev sqlite-dev swig tiff-dev zlib-dev g++ libstdc++ \
  && downloadDir="$(mktemp -d)" \
  && buildDir="$(mktemp -d)" \
  && wget http://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz -O "$downloadDir/gdal.tar.gz" \
