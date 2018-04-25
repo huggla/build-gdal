@@ -1,7 +1,7 @@
 FROM openjdk:jdk-alpine
 
 ENV GEOSERVER_VERSION="2.8.5" \
-    GDAL_VERSION="1.11.4" \
+    GDAL_VERSION="2.2.4" \
     ANT_VERSION="1.9.11" \
     ANT_HOME="/usr/local/ant" \
     LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib/:/opt/jdk/lib" \
@@ -18,4 +18,5 @@ RUN apk add --no-cache --virtual .build-deps g++ make swig \
  && cd "$buildDir/gdal-${GDAL_VERSION}" \
  && ./configure  --with-java=$JAVA_HOME \
  && make \
- && make install
+ && make install \
+ && rm -rf "$downloadDir" "$buildDir"
