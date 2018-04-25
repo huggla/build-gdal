@@ -23,7 +23,7 @@ RUN apk add --no-cache --virtual .build-deps build-base curl-dev giflib-dev jpeg
  && cp -r ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION/Desktop_Read-Only/* /opt/hexagon \
  && ln -s /opt/hexagon/lib/x64/release/libNCSEcw.so /usr/local/lib/libNCSEcw.so \
  && ln -s /opt/hexagon/lib/x64/release/libNCSEcw.so.$ECW_VERSION /usr/local/lib/libNCSEcw.so.$ECW_VERSION \
- && ldconfig \
+# && ldconfig \
  && rm -rf ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION.zip ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION \
  && wget http://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz -O "$downloadDir/gdal.tar.gz" \
  && tar xzf "$downloadDir/gdal.tar.gz" -C "$buildDir" \
@@ -33,7 +33,7 @@ RUN apk add --no-cache --virtual .build-deps build-base curl-dev giflib-dev jpeg
  && ./configure --prefix=/opt/gdal --with-curl=/usr/bin/curl-config --with-java=$JAVA_HOME --with-ecw=/opt/hexagon --without-ld-shared --disable-shared --enable-static \
  && make \
  && make install \
- && ldconfig \
+# && ldconfig \
  && wget https://www.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz -O "$downloadDir/ant.tar.gz" \
  && tar xzf "$downloadDir/ant.tar.gz" -C "$downloadDir" \
  && mkdir /opt/ant \
