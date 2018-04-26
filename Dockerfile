@@ -30,7 +30,7 @@ RUN apk add --no-cache --virtual .build-deps build-base curl-dev giflib-dev jpeg
  && sed -i 's/source="1.5"/source="1.6"/g' "$buildDir/gdal-${GDAL_VERSION}/swig/java/build.xml" \
  && sed -i 's/target="1.5"/target="1.6"/g' "$buildDir/gdal-${GDAL_VERSION}/swig/java/build.xml" \
  && cd "$buildDir/gdal-${GDAL_VERSION}" \
- && ./configure --prefix=/opt/gdal --with-java=$JAVA_HOME \
+ && ./configure --prefix=/opt/gdal --with-java=$JAVA_HOME --without-ld-shared --disable-shared --enable-static \
  && make \
  && make install \
  && wget https://www.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz -O "$downloadDir/ant.tar.gz" \
