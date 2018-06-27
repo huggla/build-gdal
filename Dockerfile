@@ -14,7 +14,7 @@ ENV GDAL_VERSION="2.3.0" \
     PATH="$PATH:/opt/jdk/bin:/opt/ant/bin"
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib/:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib"
 
-RUN apk add --no-cache --virtual .build-deps build-base curl-dev giflib-dev jpeg-dev libjpeg-turbo-dev libpng-dev linux-headers postgresql-dev python2-dev sqlite-dev swig tiff-dev zlib-dev g++ libstdc++ \
+RUN apk add --no-cache --virtual .build-deps wget build-base curl-dev giflib-dev jpeg-dev libjpeg-turbo-dev libpng-dev linux-headers postgresql-dev python2-dev sqlite-dev swig tiff-dev zlib-dev g++ libstdc++ \
  && apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted --virtual .build-deps2 proj4-dev \
  && downloadDir="$(mktemp -d)" \
  && buildDir="$(mktemp -d)" \
