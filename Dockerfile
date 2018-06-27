@@ -1,6 +1,8 @@
 FROM anapsix/alpine-java:9_jdk as jdk
 FROM huggla/alpine:20180627-edge
 
+USER root
+
 COPY --from=jdk /opt /opt
 
 ENV GDAL_VERSION="2.3.0" \
