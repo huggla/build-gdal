@@ -44,7 +44,7 @@ RUN apk add --no-cache --virtual .build-deps wget build-base curl-dev giflib-dev
  && sed -i '/JAVA_HOME =/d' java.opt \
  && make \
  && make install \
-# && mv *.so /usr/local/lib/ \
+ && mv -f *.so /usr/local/lib/ \
  && mv "$buildDir/gdal-${GDAL_VERSION}/swig/java/gdal.jar" /usr/share/gdal.jar \
  && rm -rf "$buildDir" \
  && chmod -x /opt/gdal/include/*.h \
