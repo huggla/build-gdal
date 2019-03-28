@@ -51,4 +51,5 @@ RUN mkdir -p $DESTDIR/usr/share $ANT_HOME \
 # && mv -f *.so /usr/local/lib/ \
  && cp -a $buildDir/gdal-${GDAL_VERSION}/swig/java/gdal.jar $DESTDIR/usr/share/ \
 # && chmod -x /opt/gdal/include/*.h \
- && rm -rf $buildDir
+ && rm -rf $buildDir \
+ && apk del $BUILDDEPS
