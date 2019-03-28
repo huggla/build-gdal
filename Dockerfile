@@ -1,24 +1,25 @@
-FROM anapsix/alpine-java:9_jdk as jdk
-FROM huggla/alpine:20180627-edge
+ARG TAG="20190220"
 
-USER root
+FROM huggla/alpine as alpine
 
-COPY --from=jdk /opt /opt
-
-ENV GDAL_VERSION="2.3.0" \
-    ECW_VERSION="5.3.0" \
-    ANT_VERSION="1.10.4" \
-    ANT_HOME="/opt/ant" \
-    _POSIX2_VERSION="199209" \
-    JAVA_HOME="/opt/jdk" \
-    PATH="$PATH:/opt/jdk/bin:/opt/ant/bin"
+ARG BUILDDEPS="openjdk8 build-base curl-dev giflib-dev jpeg-dev libjpeg-turbo-dev libpng-dev linux-headers postgresql-dev python2-dev sqlite-dev swig tiff-dev zlib-dev g++ libstdc++"
+ARG BUILDDEPS_TESTING="proj4-dev"
+ARG GDAL_VERSION="2.3.0"
+ARG ECW_VERSION="5.3.0"
+ARG ANT_VERSION="1.10.4"
+ARG DOWNLOADS="https://s3-eu-west-1.amazonaws.com/mapcentia-tmp/ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION.zip https://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz https://www.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz"
+ARG ANT_HOME="/opt/ant"
+ARG _POSIX2_VERSION="199209"
+ARG JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"
+ARG PATH="/bin:/sbin:/usr/bin:/usr/sbin:$JAVA_HOME/bin:$ANT_HOME/bin"
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib/:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib"
 
-RUN apk add --no-cache --virtual .build-deps wget build-base curl-dev giflib-dev jpeg-dev libjpeg-turbo-dev libpng-dev linux-headers postgresql-dev python2-dev sqlite-dev swig tiff-dev zlib-dev g++ libstdc++ \
- && apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted --virtual .build-deps2 proj4-dev \
+RUN apk add $BUILDDEPS \
+ && apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted $BUILDDEPS_TESTING \
  && downloadDir="$(mktemp -d)" \
- && buildDir="$(mktemp -d)" \
  && cd "$downloadDir" \
+ && buildDir="$(mktemp -d)" \
+
  && wget http://s3-eu-west-1.amazonaws.com/mapcentia-tmp/ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION.zip \
  && unzip ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION.zip \
  && mkdir /opt/hexagon \
