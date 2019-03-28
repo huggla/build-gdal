@@ -12,10 +12,10 @@ ARG DESTDIR="/gdal"
 ARG ANT_HOME="/opt/ant"
 ARG _POSIX2_VERSION="199209"
 ARG JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"
-ARG PATH="/bin:/sbin:/usr/bin:/usr/sbin:$JAVA_HOME/bin:$ANT_HOME/bin"
-ARG LD_LIBRARY_PATH="/usr/local/lib/:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib"
+ENV PATH="/bin:/sbin:/usr/bin:/usr/sbin:$JAVA_HOME/bin:$ANT_HOME/bin" \
+    LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/lib/:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib"
 
-RUN mkdir -p $DESTDIR/usr/share /opt/ant \
+RUN mkdir -p $DESTDIR/usr/share $ANT_HOME \
  && apk add $BUILDDEPS \
  && apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted $BUILDDEPS_TESTING \
  && downloadDir="$(mktemp -d)" \
@@ -43,7 +43,7 @@ RUN mkdir -p $DESTDIR/usr/share /opt/ant \
  && ./configure --with-java=$JAVA_HOME --without-ld-shared --disable-shared --enable-static \
  && make \
  && make install \
- && cp -a $buildDir/apache-ant-${ANT_VERSION}/bin $buildDir/apache-ant-${ANT_VERSION}/lib /opt/ant/ \
+ && cp -a $buildDir/apache-ant-${ANT_VERSION}/bin $buildDir/apache-ant-${ANT_VERSION}/lib $ANT_HOME/ \
  && cd "$buildDir/gdal-${GDAL_VERSION}/swig/java" \
  && sed -i '/JAVA_HOME =/d' java.opt \
  && make \
