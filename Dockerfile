@@ -22,7 +22,7 @@ RUN mkdir -p $DESTDIR/usr/share /opt/ant \
  && buildDir="$(mktemp -d)" \
  && cd "$downloadDir" \
  && wget $DOWNLOADS \
- && tarFiles="$(ls *.tar *.tar.*)" \
+ && tarFiles="$(ls *.tar.*)" \
  && for tar in $tarFiles; \
     do \
        tar -xvp -f "$tar" -C $buildDir; \
