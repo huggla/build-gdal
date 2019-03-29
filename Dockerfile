@@ -15,7 +15,7 @@ ARG JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"
 ENV PATH="/bin:/sbin:/usr/bin:/usr/sbin:$JAVA_HOME/bin:$ANT_HOME/bin" \
     LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/lib/:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib"
 
-RUN mkdir -p $DESTDIR/usr/share $ANT_HOME /gdal-dev/usr/bin /gdal-dev/usr/lib /py-gdal/usr/bin \
+RUN mkdir -p $DESTDIR/usr/share $ANT_HOME /gdal-dev/usr/bin /gdal-dev/usr/lib /py-gdal/usr/bin /py-gdal/usr/lib \
  && apk add $BUILDDEPS \
  && apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted $BUILDDEPS_TESTING \
  && downloadDir="$(mktemp -d)" \
