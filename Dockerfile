@@ -16,7 +16,7 @@ ENV ANT_HOME="/opt/ant" \
     JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"
 ENV PATH="/bin:/sbin:/usr/bin:/usr/sbin:$JAVA_HOME/bin:$ANT_HOME/bin" \
     LD_LIBRARY_PATH="/lib:/usr/lib:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib" \
-    CFLAGS="-mcmodel=large -fPIC"
+    CFLAGS="-mcmodel=large -fPIC -shared-intel"
 
 RUN mkdir -p $DESTDIR/usr/share $ANT_HOME $DESTDIR-dev/usr/bin $DESTDIR-dev/usr/lib $DESTDIR-py \
  && apk add $BUILDDEPS \
@@ -53,12 +53,12 @@ RUN mkdir -p $DESTDIR/usr/share $ANT_HOME $DESTDIR-dev/usr/bin $DESTDIR-dev/usr/
  && make install \
  && cp -a $buildDir/gdal-${GDAL_VERSION}/swig/java/gdal.jar $DESTDIR/usr/share/ \
  && cd $buildDir/gdal-${GDAL_VERSION}/swig/python \
-	&& python2 setup.py build \
+ && python2 setup.py build \
  && chmod -x $DESTDIR/usr/include/*.h \
  && python2 setup.py install --prefix=/usr --root=$DESTDIR-py \
-	&& chmod a+x scripts/* \
-	&& install -d $DESTDIR-py/usr/bin \
-	&& install -m755 scripts/*.py $DESTDIR-py/usr/bin/ \
+ && chmod a+x scripts/* \
+ && install -d $DESTDIR-py/usr/bin \
+ && install -m755 scripts/*.py $DESTDIR-py/usr/bin/ \
  && mv $DESTDIR/usr/include $DESTDIR-dev/usr/ \
  && mv $DESTDIR/usr/bin/gdal-config $DESTDIR-dev/usr/bin/
 # && mv $DESTDIR/usr/lib/libgdal.a $DESTDIR/usr/lib/pkgconfig $DESTDIR-dev/usr/lib/ \
