@@ -67,4 +67,4 @@ FROM huggla/busybox:$TAG as image
 
 ARG DESTDIR
 
-COPY --from=alpine $DESTDIR $DESTDIR-dev $DESTDIR-py ./
+COPY --from=alpine $DESTDIR $DESTDIR-dev $DESTDIR-py /
