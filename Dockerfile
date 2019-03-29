@@ -1,4 +1,5 @@
 ARG TAG="20190327"
+ARG DESTDIR="/gdal"
 
 FROM huggla/alpine as alpine
 
@@ -8,12 +9,12 @@ ARG GDAL_VERSION="2.3.0"
 ARG ECW_VERSION="5.3.0"
 ARG ANT_VERSION="1.10.5"
 ARG DOWNLOADS="https://s3-eu-west-1.amazonaws.com/mapcentia-tmp/ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION.zip https://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz https://www.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz"
-ARG DESTDIR="/gdal"
+ARG DESTDIR
 ARG ANT_HOME="/opt/ant"
 ARG _POSIX2_VERSION="199209"
 ARG JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"
 ARG PATH="/bin:/sbin:/usr/bin:/usr/sbin:$JAVA_HOME/bin:$ANT_HOME/bin"
-ARG LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/lib/:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib"
+ARG LD_LIBRARY_PATH="/lib:/usr/lib:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib"
 
 RUN mkdir -p $DESTDIR/usr/share $ANT_HOME /gdal-dev/usr/bin /gdal-dev/usr/lib /py-gdal/usr/bin /py-gdal/usr/lib \
  && apk add $BUILDDEPS \
@@ -35,12 +36,12 @@ RUN mkdir -p $DESTDIR/usr/share $ANT_HOME /gdal-dev/usr/bin /gdal-dev/usr/lib /p
  && cd $buildDir \
  && cp -a ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION/Desktop_Read-Only /opt/hexagon \
  && rm -rf $downloadDir ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION /opt/hexagon/lib/x86 \
- && ln -s /opt/hexagon/lib/x64/release/libNCSEcw.so /usr/local/lib/libNCSEcw.so \
- && ln -s /opt/hexagon/lib/x64/release/libNCSEcw.so.$ECW_VERSION /usr/local/lib/libNCSEcw.so.$ECW_VERSION \
+ && ln -s /opt/hexagon/lib/x64/release/libNCSEcw.so /usr/lib/libNCSEcw.so \
+ && ln -s /opt/hexagon/lib/x64/release/libNCSEcw.so.$ECW_VERSION /usr/lib/libNCSEcw.so.$ECW_VERSION \
  && sed -i 's/source="1.5"/source="1.6"/g' gdal-${GDAL_VERSION}/swig/java/build.xml \
  && sed -i 's/target="1.5"/target="1.6"/g' gdal-${GDAL_VERSION}/swig/java/build.xml \
  && cd gdal-${GDAL_VERSION} \
- && ./configure --with-java=$JAVA_HOME --without-ld-shared --disable-shared --enable-static \
+ && ./configure --prefix=/usr --with-java=$JAVA_HOME --without-ld-shared --disable-shared --enable-static \
  && make \
  && make install \
  && cp -a $buildDir/apache-ant-${ANT_VERSION}/bin $buildDir/apache-ant-${ANT_VERSION}/lib $ANT_HOME/ \
@@ -49,12 +50,14 @@ RUN mkdir -p $DESTDIR/usr/share $ANT_HOME /gdal-dev/usr/bin /gdal-dev/usr/lib /p
  && make \
  && make install \
  && cp -a $buildDir/gdal-${GDAL_VERSION}/swig/java/gdal.jar $DESTDIR/usr/share/ \
- && mv /gdal/usr/include /gdal-dev/usr/ \
- && mv /gdal/usr/bin/gdal-config /gdal-dev/usr/bin/ \
- && mv /gdal/usr/lib/libgdal.a /gdal/usr/lib/libgdal.so /gdal/usr/lib/pkgconfig /gdal-dev/usr/lib/ \
- && mv /gdal/usr/bin/*.py /py-gdal/usr/bin/ \
- && mv /gdal/usr/lib/python2.7 /py-gdal/usr/lib/
+ && mv $DESTDIR/usr/include $DESTDIR-dev/usr/ \
+ && mv $DESTDIR/usr/bin/gdal-config $DESTDIR-dev/usr/bin/ \
+ && mv $DESTDIR/usr/lib/libgdal.a $DESTDIR/usr/lib/libgdal.so $DESTDIR/usr/lib/pkgconfig $DESTDIR-dev/usr/lib/ \
+ && mv $DESTDIR/usr/bin/*.py $DESTDIR-py/usr/bin/ \
+ && mv $DESTDIR/usr/lib/python2.7 $DESTDIR-py/usr/lib/
 
 FROM huggla/busybox:$TAG as image
 
-COPY --from=alpine /gdal /gdal-dev /py-gdal ./
+ARG DESTDIR
+
+COPY --from=alpine $DESTDIR $DESTDIR-dev $DESTDIR-py ./
