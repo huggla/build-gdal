@@ -10,11 +10,12 @@ ARG ECW_VERSION="5.3.0"
 ARG ANT_VERSION="1.10.5"
 ARG DOWNLOADS="https://s3-eu-west-1.amazonaws.com/mapcentia-tmp/ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION.zip https://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz https://www.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz"
 ARG DESTDIR
-ARG ANT_HOME="/opt/ant"
-ARG _POSIX2_VERSION="199209"
-ARG JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"
-ARG PATH="/bin:/sbin:/usr/bin:/usr/sbin:$JAVA_HOME/bin:$ANT_HOME/bin"
-ARG LD_LIBRARY_PATH="/lib:/usr/lib:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib"
+
+ENV ANT_HOME="/opt/ant" \
+    _POSIX2_VERSION="199209" \
+    JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk" \
+    PATH="/bin:/sbin:/usr/bin:/usr/sbin:$JAVA_HOME/bin:$ANT_HOME/bin" \
+    LD_LIBRARY_PATH="/lib:/usr/lib:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib"
 
 RUN mkdir -p $DESTDIR/usr/share $ANT_HOME $DESTDIR-dev/usr/bin $DESTDIR-dev/usr/lib $DESTDIR-py \
  && apk add $BUILDDEPS \
