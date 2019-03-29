@@ -12,8 +12,8 @@ ARG DESTDIR="/gdal"
 ARG ANT_HOME="/opt/ant"
 ARG _POSIX2_VERSION="199209"
 ARG JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"
-ENV PATH="/bin:/sbin:/usr/bin:/usr/sbin:$JAVA_HOME/bin:$ANT_HOME/bin" \
-    LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/lib/:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib"
+ARG PATH="/bin:/sbin:/usr/bin:/usr/sbin:$JAVA_HOME/bin:$ANT_HOME/bin"
+ARG LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/lib/:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib"
 
 RUN mkdir -p $DESTDIR/usr/share $ANT_HOME /gdal-dev/usr/bin /gdal-dev/usr/lib /py-gdal/usr/bin /py-gdal/usr/lib \
  && apk add $BUILDDEPS \
