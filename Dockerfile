@@ -1,4 +1,4 @@
-ARG TAG="20190220"
+ARG TAG="20190327"
 
 FROM huggla/alpine as alpine
 
@@ -15,7 +15,7 @@ ARG JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"
 ENV PATH="/bin:/sbin:/usr/bin:/usr/sbin:$JAVA_HOME/bin:$ANT_HOME/bin" \
     LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/lib/:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib"
 
-RUN mkdir -p $DESTDIR/usr/share $ANT_HOME \
+RUN mkdir -p $DESTDIR/usr/share $ANT_HOME /gdal-dev/usr/bin /gdal-dev/usr/lib /py-gdal/usr/bin \
  && apk add $BUILDDEPS \
  && apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted $BUILDDEPS_TESTING \
  && downloadDir="$(mktemp -d)" \
@@ -48,8 +48,13 @@ RUN mkdir -p $DESTDIR/usr/share $ANT_HOME \
  && sed -i '/JAVA_HOME =/d' java.opt \
  && make \
  && make install \
-# && mv -f *.so /usr/local/lib/ \
  && cp -a $buildDir/gdal-${GDAL_VERSION}/swig/java/gdal.jar $DESTDIR/usr/share/ \
-# && chmod -x /opt/gdal/include/*.h \
- && rm -rf $buildDir \
- && apk del $BUILDDEPS
+ && mv /gdal/usr/include /gdal-dev/usr/ \
+ && mv /gdal/usr/bin/gdal-config /gdal-dev/usr/bin/ \
+ && mv /gdal/usr/lib/libgdal.a /gdal/usr/lib/libgdal.so /gdal/usr/lib/pkgconfig /gdal-dev/usr/lib/ \
+ && mv /gdal/usr/bin/*.py /py-gdal/usr/bin/ \
+ && mv /gdal/usr/lib/python2.7 /py-gdal/usr/lib/
+
+FROM huggla/busybox:$TAG as image
+
+COPY --from=alpine /gdal /gdal-dev /py-gdal ./
