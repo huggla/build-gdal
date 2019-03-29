@@ -4,7 +4,7 @@ ARG DESTDIR="/gdal"
 FROM huggla/alpine as alpine
 
 ARG BUILDDEPS="openjdk8 build-base curl-dev giflib-dev jpeg-dev libjpeg-turbo-dev libpng-dev linux-headers postgresql-dev python2-dev sqlite-dev swig tiff-dev zlib-dev g++ libstdc++"
-ARG BUILDDEPS_TESTING="proj4-dev"
+ARG BUILDDEPS_TESTING="geos-dev proj4-dev"
 ARG GDAL_VERSION="2.3.0"
 ARG ECW_VERSION="5.3.0"
 ARG ANT_VERSION="1.10.5"
@@ -41,15 +41,22 @@ RUN mkdir -p $DESTDIR/usr/share $ANT_HOME /gdal-dev/usr/bin /gdal-dev/usr/lib \
  && sed -i 's/source="1.5"/source="1.6"/g' gdal-${GDAL_VERSION}/swig/java/build.xml \
  && sed -i 's/target="1.5"/target="1.6"/g' gdal-${GDAL_VERSION}/swig/java/build.xml \
  && cd gdal-${GDAL_VERSION} \
- && ./configure --prefix=/usr --with-java=$JAVA_HOME --without-ld-shared --disable-shared --enable-static \
+ && ./configure --prefix=/usr --with-curl=/usr/bin/curl-config --with-java=$JAVA_HOME --without-ld-shared --disable-shared --enable-static \
  && make \
  && make install \
  && cp -a $buildDir/apache-ant-${ANT_VERSION}/bin $buildDir/apache-ant-${ANT_VERSION}/lib $ANT_HOME/ \
- && cd "$buildDir/gdal-${GDAL_VERSION}/swig/java" \
+ && cd $buildDir/gdal-${GDAL_VERSION}/swig/java \
  && sed -i '/JAVA_HOME =/d' java.opt \
  && make \
  && make install \
  && cp -a $buildDir/gdal-${GDAL_VERSION}/swig/java/gdal.jar $DESTDIR/usr/share/ \
+ && cd $buildDir/gdal-${GDAL_VERSION}/swig/python \
+	&& python2 setup.py build \
+ && chmod -x $DESTDIR/usr/include/*.h \
+ && python2 setup.py install --prefix=/usr --root=$DESTDIR-py \
+	&& chmod a+x scripts/* \
+	&& install -d $DESTDIR-py/usr/bin \
+	&& install -m755 scripts/*.py $DESTDIR-py/usr/bin/ \
  && mv $DESTDIR/usr/include $DESTDIR-dev/usr/ \
  && mv $DESTDIR/usr/bin/gdal-config $DESTDIR-dev/usr/bin/
 # && mv $DESTDIR/usr/lib/libgdal.a $DESTDIR/usr/lib/pkgconfig $DESTDIR-dev/usr/lib/ \
