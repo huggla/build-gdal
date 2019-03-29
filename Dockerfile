@@ -3,7 +3,7 @@ ARG DESTDIR="/gdal"
 
 FROM huggla/alpine as alpine
 
-ARG BUILDDEPS="openjdk8 build-base curl-dev giflib-dev jpeg-dev libjpeg-turbo-dev libpng-dev linux-headers postgresql-dev python2-dev sqlite-dev swig tiff-dev zlib-dev g++ libstdc++"
+ARG BUILDDEPS="openjdk8 build-base curl-dev giflib-dev jpeg-dev libjpeg-turbo-dev libpng-dev linux-headers postgresql-dev python2-dev sqlite-dev swig tiff-dev zlib-dev g++ libstdc++ py-numpy-dev"
 ARG BUILDDEPS_TESTING="geos-dev proj4-dev"
 ARG GDAL_VERSION="2.4.1"
 ARG ECW_VERSION="5.3.0"
