@@ -16,7 +16,7 @@ ENV ANT_HOME="/opt/ant" \
     JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"
 ENV PATH="/bin:/sbin:/usr/bin:/usr/sbin:$JAVA_HOME/bin:$ANT_HOME/bin" \
     LD_LIBRARY_PATH="/lib:/usr/lib:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib" \
-    CFLAGS="-mcmodel=large -fPIC -shared-intel"
+    CFLAGS="-mcmodel=large -fPIC -shared-intel -without-ld-shared -disable-shared -enable-static"
 
 RUN mkdir -p $DESTDIR/usr/share $ANT_HOME $DESTDIR-dev/usr/bin $DESTDIR-dev/usr/lib $DESTDIR-py \
  && apk add $BUILDDEPS \
