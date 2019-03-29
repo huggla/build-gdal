@@ -5,7 +5,7 @@ FROM huggla/alpine as alpine
 
 ARG BUILDDEPS="openjdk8 build-base curl-dev giflib-dev jpeg-dev libjpeg-turbo-dev libpng-dev linux-headers postgresql-dev python2-dev sqlite-dev swig tiff-dev zlib-dev g++ libstdc++"
 ARG BUILDDEPS_TESTING="geos-dev proj4-dev"
-ARG GDAL_VERSION="2.3.0"
+ARG GDAL_VERSION="2.4.1"
 ARG ECW_VERSION="5.3.0"
 ARG ANT_VERSION="1.10.5"
 ARG DOWNLOADS="https://s3-eu-west-1.amazonaws.com/mapcentia-tmp/ERDAS-ECW_JPEG_2000_SDK-$ECW_VERSION.zip https://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz https://www.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz"
