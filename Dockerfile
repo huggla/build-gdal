@@ -51,10 +51,10 @@ RUN mkdir -p $DESTDIR/usr/share $ANT_HOME /gdal-dev/usr/bin /gdal-dev/usr/lib /p
  && make install \
  && cp -a $buildDir/gdal-${GDAL_VERSION}/swig/java/gdal.jar $DESTDIR/usr/share/ \
  && mv $DESTDIR/usr/include $DESTDIR-dev/usr/ \
- && mv $DESTDIR/usr/bin/gdal-config $DESTDIR-dev/usr/bin/ \
- && mv $DESTDIR/usr/lib/libgdal.a $DESTDIR/usr/lib/libgdal.so $DESTDIR/usr/lib/pkgconfig $DESTDIR-dev/usr/lib/ \
- && mv $DESTDIR/usr/bin/*.py $DESTDIR-py/usr/bin/ \
- && mv $DESTDIR/usr/lib/python2.7 $DESTDIR-py/usr/lib/
+ && mv $DESTDIR/usr/bin/gdal-config $DESTDIR-dev/usr/bin/
+# && mv $DESTDIR/usr/lib/libgdal.a $DESTDIR/usr/lib/pkgconfig $DESTDIR-dev/usr/lib/ \
+# && mv $DESTDIR/usr/bin/*.py $DESTDIR-py/usr/bin/ \
+# && mv $DESTDIR/usr/lib/python2.7 $DESTDIR-py/usr/lib/
 
 FROM huggla/busybox:$TAG as image
 
