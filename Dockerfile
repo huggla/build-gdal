@@ -43,7 +43,7 @@ RUN mkdir -p $DESTDIR/usr/share $ANT_HOME $DESTDIR-dev/usr/bin $DESTDIR-dev/usr/
  && sed -i 's/source="1.5"/source="1.6"/g' gdal-${GDAL_VERSION}/swig/java/build.xml \
  && sed -i 's/target="1.5"/target="1.6"/g' gdal-${GDAL_VERSION}/swig/java/build.xml \
  && cd gdal-${GDAL_VERSION} \
- && ./configure --prefix=/usr --with-curl=/usr/bin/curl-config --with-java=$JAVA_HOME --with-ecw=/opt/hexagon --without-ld-shared --disable-shared --enable-static \
+ && ./configure --prefix=/usr --with-curl=/usr/bin/curl-config --with-java=$JAVA_HOME --with-ecw=/opt/hexagon \
  && make \
  && make install \
  && cp -a $buildDir/apache-ant-${ANT_VERSION}/bin $buildDir/apache-ant-${ANT_VERSION}/lib $ANT_HOME/ \
