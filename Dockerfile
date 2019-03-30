@@ -3,7 +3,7 @@ ARG DESTDIR="/gdal"
 
 FROM huggla/alpine as alpine
 
-ARG BUILDDEPS="openjdk8 build-base curl-dev giflib-dev jpeg-dev libjpeg-turbo-dev libpng-dev linux-headers postgresql-dev python2-dev sqlite-dev swig tiff-dev zlib-dev g++ libstdc++ py-numpy-dev"
+ARG BUILDDEPS="openjdk8 build-base curl-dev giflib-dev jpeg-dev libjpeg-turbo-dev libpng-dev linux-headers postgresql-dev sqlite-dev swig tiff-dev zlib-dev g++ libstdc++"
 ARG BUILDDEPS_TESTING="geos-dev proj4-dev"
 ARG GDAL_VERSION="2.4.1"
 ARG ECW_VERSION="5.3.0"
@@ -16,7 +16,7 @@ ENV ANT_HOME="/opt/ant" \
     JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"
 ENV PATH="/bin:/sbin:/usr/bin:/usr/sbin:$JAVA_HOME/bin:$ANT_HOME/bin" \
     LD_LIBRARY_PATH="/lib:/usr/lib:$JAVA_HOME/lib/amd64/jli:$JAVA_HOME/lib" \
-    CFLAGS="-mcmodel=large -fPIC -Os -fomit-frame-pointer"
+    CFLAGS="-Os -fomit-frame-pointer"
 
 RUN mkdir -p $DESTDIR/usr/share $ANT_HOME $DESTDIR-dev/usr/bin $DESTDIR-dev/usr/lib $DESTDIR-py \
  && apk add $BUILDDEPS \
@@ -52,13 +52,13 @@ RUN mkdir -p $DESTDIR/usr/share $ANT_HOME $DESTDIR-dev/usr/bin $DESTDIR-dev/usr/
  && make \
  && make install \
  && cp -a $buildDir/gdal-${GDAL_VERSION}/swig/java/gdal.jar $DESTDIR/usr/share/ \
- && cd $buildDir/gdal-${GDAL_VERSION}/swig/python \
- && python2 setup.py build \
+# && cd $buildDir/gdal-${GDAL_VERSION}/swig/python \
+# && python2 setup.py build \
  && chmod -x $DESTDIR/usr/include/*.h \
- && python2 setup.py install --prefix=/usr --root=$DESTDIR-py --without-ld-shared --disable-shared --enable-static \
- && chmod a+x scripts/* \
- && install -d $DESTDIR-py/usr/bin \
- && install -m755 scripts/*.py $DESTDIR-py/usr/bin/ \
+# && python2 setup.py install --prefix=/usr --root=$DESTDIR-py --without-ld-shared --disable-shared --enable-static \
+# && chmod a+x scripts/* \
+# && install -d $DESTDIR-py/usr/bin \
+# && install -m755 scripts/*.py $DESTDIR-py/usr/bin/ \
  && mv $DESTDIR/usr/include $DESTDIR-dev/usr/ \
  && mv $DESTDIR/usr/bin/gdal-config $DESTDIR-dev/usr/bin/
 # && mv $DESTDIR/usr/lib/libgdal.a $DESTDIR/usr/lib/pkgconfig $DESTDIR-dev/usr/lib/ \
@@ -69,4 +69,4 @@ FROM huggla/busybox:$TAG as image
 
 ARG DESTDIR
 
-COPY --from=alpine $DESTDIR $DESTDIR-dev $DESTDIR-py /
+COPY --from=alpine $DESTDIR $DESTDIR-dev /
